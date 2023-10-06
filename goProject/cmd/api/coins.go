@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"goProject/internal/data"
+	"goProject/internal/validator"
 	"net/http"
 	"time"
 )
@@ -10,6 +11,7 @@ import (
 func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Title        string            `json:"title"`
+		Description  string            `json:"description"`
 		Year         data.Year         `json:"year"`
 		Country      string            `json:"country"`
 		Status       string            `json:"status"`
@@ -21,6 +23,24 @@ func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request
 	err := app.readJSON(w, r, &input)
 	if err != nil {
 		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	coin := &data.Coin{
+		Title:        input.Title,
+		Description:  input.Description,
+		Year:         input.Year,
+		Country:      input.Country,
+		Status:       input.Status,
+		Quantity:     input.Quantity,
+		Material:     input.Material,
+		AuctionValue: input.AuctionValue,
+	}
+
+	v := validator.New()
+
+	if data.ValidateCoin(v, coin); !v.Valid() {
+		app.failedValidationResponse(w, r, v.Errors)
 		return
 	}
 
