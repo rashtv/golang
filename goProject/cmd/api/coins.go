@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"goProject/internal/data"
 	"goProject/internal/validator"
+	"math"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -56,12 +58,14 @@ func (app *application) showCoinHandler(w http.ResponseWriter, r *http.Request) 
 	coin := data.Coin{
 		ID:           id,
 		CreatedAt:    time.Now(),
-		Title:        "100 KZT",
-		Country:      "Kazakhstan",
-		Status:       "Still in Production",
-		Quantity:     100000,
-		Material:     "Base metal alloys",
-		AuctionValue: 1000,
+		Title:        "Coin " + strconv.FormatInt(id, 10),
+		Description:  "Coin's description",
+		Year:         2023,
+		Country:      "Coin's country",
+		Status:       "Coin's status of usability",
+		Quantity:     1,
+		Material:     "Coin's material",
+		AuctionValue: math.MaxInt,
 	}
 	err = app.writeJSON(w, http.StatusOK, envelope{"coin": coin}, nil)
 	if err != nil {
