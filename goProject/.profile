@@ -1,0 +1,1 @@
+export NUMISMATICS_DB_DSN='postgres://numismatics:numismatics@localhost/numismatics?sslmode=disable'
