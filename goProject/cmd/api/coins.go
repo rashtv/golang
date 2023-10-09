@@ -14,7 +14,6 @@ func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request
 	var input struct {
 		Title        string            `json:"title"`
 		Description  string            `json:"description"`
-		Year         data.Year         `json:"year"`
 		Country      string            `json:"country"`
 		Status       string            `json:"status"`
 		Quantity     int64             `json:"quantity"`
@@ -31,7 +30,6 @@ func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request
 	coin := &data.Coin{
 		Title:        input.Title,
 		Description:  input.Description,
-		Year:         input.Year,
 		Country:      input.Country,
 		Status:       input.Status,
 		Quantity:     input.Quantity,
@@ -60,7 +58,6 @@ func (app *application) showCoinHandler(w http.ResponseWriter, r *http.Request) 
 		CreatedAt:    time.Now(),
 		Title:        "Coin " + strconv.FormatInt(id, 10),
 		Description:  "Coin's description",
-		Year:         2023,
 		Country:      "Coin's country",
 		Status:       "Coin's status of usability",
 		Quantity:     1,

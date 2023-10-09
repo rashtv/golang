@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS coins (
     created_at timestamp(0) with time zone NOT NULL DEFAULT NOW(),
     title text NOT NULL,
     description text NOT NULL,
-    year integer NOT NULL,
     country text NOT NULL,
     status text NOT NULL,
     quantity integer NOT NULL,
