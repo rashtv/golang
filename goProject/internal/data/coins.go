@@ -1,6 +1,7 @@
 package data
 
 import (
+	"database/sql"
 	"goProject/internal/validator"
 	"time"
 )
@@ -31,4 +32,24 @@ func ValidateCoin(v *validator.Validator, coin *Coin) {
 	v.Check(len(coin.Status) <= 256, "status", "must not be more than 256 bytes long")
 	v.Check(coin.Quantity > 0, "quantity", "cannot be equal to zero")
 	v.Check(len(coin.Material) <= 256, "material", "must not be more than 256 bytes long")
+}
+
+type CoinModel struct {
+	DB *sql.DB
+}
+
+func (c CoinModel) Insert(coin *Coin) error {
+	return nil
+}
+
+func (c CoinModel) Get(id int64) (*Coin, error) {
+	return nil, nil
+}
+
+func (c CoinModel) Update(coin *Coin) error {
+	return nil
+}
+
+func (c CoinModel) Delete(id int64) error {
+	return nil
 }
