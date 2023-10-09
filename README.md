@@ -3,7 +3,12 @@
 
 **ID : 20B030345 | KBTU**
 
-# Golang Application: Numismatics | Coin Data Collection
+# TSIS 1 | Simple Project | Management
+- to understand main principles and syntax in Golang;
+- to get acquainted with OOP in Golang;
+- and others significant things...
+
+# GoProject | Golang Application: Numismatics | Coin Data Collection
 ## Current functionality:
 * **<span style="font-size: 24px;">Basic Coin Structure | Name | Description | etc.</span>**
 * **<span style="font-size: 24px;">Sending & Parsing JSON Requests | Customized JSON</span>**
