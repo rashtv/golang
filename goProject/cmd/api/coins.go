@@ -1,13 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"goProject/internal/data"
 	"goProject/internal/validator"
-	"math"
 	"net/http"
-	"strconv"
-	"time"
 )
 
 func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,21 +63,20 @@ func (app *application) showCoinHandler(w http.ResponseWriter, r *http.Request) 
 		app.notFoundResponse(w, r)
 		return
 	}
-	coin := data.Coin{
-		ID:           id,
-		CreatedAt:    time.Now(),
-		Title:        "Coin " + strconv.FormatInt(id, 10),
-		Description:  "Coin's description",
-		Country:      "Coin's country",
-		Status:       "Coin's status of usability",
-		Quantity:     1,
-		Material:     "Coin's material",
-		AuctionValue: math.MaxInt,
-		Version:      1,
+
+	coin, err := app.models.Coins.Get(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			app.notFoundResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
+		return
 	}
+
 	err = app.writeJSON(w, http.StatusOK, envelope{"coin": coin}, nil)
 	if err != nil {
-		app.logger.Println(err)
 		app.serverErrorResponse(w, r, err)
 	}
 }

@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"errors"
 	"goProject/internal/validator"
 	"time"
 )
@@ -40,12 +41,51 @@ func (c CoinModel) Insert(coin *Coin) error {
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		RETURNING id, created_at, version`
 
-	args := []interface{}{coin.Title, coin.Description, coin.Country, coin.Status, coin.Quantity, coin.Material, coin.AuctionValue}
+	args := []interface{}{
+		coin.Title,
+		coin.Description,
+		coin.Country,
+		coin.Status,
+		coin.Quantity,
+		coin.Material,
+		coin.AuctionValue,
+	}
+
 	return c.DB.QueryRow(query, args...).Scan(&coin.ID, &coin.CreatedAt, &coin.Version)
 }
 
 func (c CoinModel) Get(id int64) (*Coin, error) {
-	return nil, nil
+	if id < 1 {
+		return nil, ErrRecordNotFound
+	}
+
+	query := `SELECT * FROM coins WHERE id = $1`
+
+	var coin Coin
+
+	err := c.DB.QueryRow(query, id).Scan(
+		&coin.ID,
+		&coin.CreatedAt,
+		&coin.Title,
+		&coin.Description,
+		&coin.Country,
+		&coin.Status,
+		&coin.Quantity,
+		&coin.Material,
+		&coin.AuctionValue,
+		&coin.Version,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &coin, nil
 }
 
 func (c CoinModel) Update(coin *Coin) error {
