@@ -89,7 +89,31 @@ func (c CoinModel) Get(id int64) (*Coin, error) {
 }
 
 func (c CoinModel) Update(coin *Coin) error {
-	return nil
+	query := `
+		UPDATE coins
+		SET title = $1,
+		    description = $2,
+		    country = $3,
+		    status = $4,
+		    quantity = $5,
+		    material = $6,
+		    auction_value = $7,
+		    version = version + 1
+		WHERE id = $8
+		RETURNING version`
+
+	args := []interface{}{
+		coin.Title,
+		coin.Description,
+		coin.Country,
+		coin.Status,
+		coin.Quantity,
+		coin.Material,
+		coin.AuctionValue,
+		coin.ID,
+	}
+
+	return c.DB.QueryRow(query, args...).Scan(&coin.Version)
 }
 
 func (c CoinModel) Delete(id int64) error {
