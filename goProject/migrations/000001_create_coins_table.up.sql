@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS coins (
     status text NOT NULL,
     quantity integer NOT NULL,
     material text NOT NULL,
-    auction_value integer NOT NULL
+    auction_value integer NOT NULL,
+    version integer NOT NULL
 );

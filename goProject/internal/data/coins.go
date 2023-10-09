@@ -16,6 +16,7 @@ type Coin struct {
 	Quantity     int64        `json:"quantity,omitempty"`
 	Material     string       `json:"material,omitempty"`
 	AuctionValue AuctionValue `json:"auction_value,omitempty"`
+	Version      int32        `json:"version"`
 }
 
 func ValidateCoin(v *validator.Validator, coin *Coin) {

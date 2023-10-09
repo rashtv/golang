@@ -19,6 +19,7 @@ func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request
 		Quantity     int64             `json:"quantity"`
 		Material     string            `json:"material"`
 		AuctionValue data.AuctionValue `json:"auction_value"`
+		Version      int32             `json:"version"`
 	}
 
 	err := app.readJSON(w, r, &input)
@@ -35,6 +36,7 @@ func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request
 		Quantity:     input.Quantity,
 		Material:     input.Material,
 		AuctionValue: input.AuctionValue,
+		Version:      input.Version,
 	}
 
 	v := validator.New()
@@ -63,6 +65,7 @@ func (app *application) showCoinHandler(w http.ResponseWriter, r *http.Request) 
 		Quantity:     1,
 		Material:     "Coin's material",
 		AuctionValue: math.MaxInt,
+		Version:      1,
 	}
 	err = app.writeJSON(w, http.StatusOK, envelope{"coin": coin}, nil)
 	if err != nil {
