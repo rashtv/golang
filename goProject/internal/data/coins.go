@@ -35,7 +35,13 @@ type CoinModel struct {
 }
 
 func (c CoinModel) Insert(coin *Coin) error {
-	return nil
+	query := `
+		INSERT INTO coins (title, description, country, status, quantity, material, auction_value)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		RETURNING id, created_at, version`
+
+	args := []interface{}{coin.Title, coin.Description, coin.Country, coin.Status, coin.Quantity, coin.Material, coin.AuctionValue}
+	return c.DB.QueryRow(query, args...).Scan(&coin.ID, &coin.CreatedAt, &coin.Version)
 }
 
 func (c CoinModel) Get(id int64) (*Coin, error) {

@@ -45,8 +45,18 @@ func (app *application) createCoinHandler(w http.ResponseWriter, r *http.Request
 		app.failedValidationResponse(w, r, v.Errors)
 		return
 	}
+	err = app.models.Coins.Insert(coin)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+	headers := make(http.Header)
+	headers.Set("Location", fmt.Sprintf("v1/coins/%d", coin.ID))
 
-	fmt.Fprintf(w, "%+v\n", input)
+	err = app.writeJSON(w, http.StatusCreated, envelope{"coin": coin}, headers)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
 }
 
 func (app *application) showCoinHandler(w http.ResponseWriter, r *http.Request) {
