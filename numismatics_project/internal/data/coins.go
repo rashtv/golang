@@ -1,6 +1,7 @@
 package data
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"goProject/internal/validator"
@@ -51,7 +52,11 @@ func (c CoinModel) Insert(coin *Coin) error {
 		coin.AuctionValue,
 	}
 
-	return c.DB.QueryRow(query, args...).Scan(&coin.ID, &coin.CreatedAt, &coin.Version)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+
+	defer cancel()
+
+	return c.DB.QueryRowContext(ctx, query, args...).Scan(&coin.ID, &coin.CreatedAt, &coin.Version)
 }
 
 func (c CoinModel) Get(id int64) (*Coin, error) {
@@ -59,11 +64,27 @@ func (c CoinModel) Get(id int64) (*Coin, error) {
 		return nil, ErrRecordNotFound
 	}
 
-	query := `SELECT * FROM coins WHERE id = $1`
+	query := `
+		SELECT id,
+		       created_at,
+		       title,
+		       description,
+		       country,
+		       status,
+		       quantity,
+		       material,
+		       auction_value,
+		       version
+		FROM coins
+		WHERE id = $1`
 
 	var coin Coin
 
-	err := c.DB.QueryRow(query, id).Scan(
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+
+	defer cancel()
+
+	err := c.DB.QueryRowContext(ctx, query, id).Scan(
 		&coin.ID,
 		&coin.CreatedAt,
 		&coin.Title,
@@ -114,7 +135,11 @@ func (c CoinModel) Update(coin *Coin) error {
 		coin.Version,
 	}
 
-	err := c.DB.QueryRow(query, args...).Scan(&coin.Version)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+
+	defer cancel()
+
+	err := c.DB.QueryRowContext(ctx, query, args...).Scan(&coin.Version)
 	if err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):
@@ -136,7 +161,11 @@ func (c CoinModel) Delete(id int64) error {
 		DELETE FROM coins
 		WHERE id = $1`
 
-	result, err := c.DB.Exec(query, id)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+
+	defer cancel()
+
+	result, err := c.DB.ExecContext(ctx, query, id)
 	if err != nil {
 		return err
 	}

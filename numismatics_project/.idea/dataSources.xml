@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="numismatics@localhost" uuid="05d893ad-6502-451f-b178-ef6c180da848">
+    <data-source source="LOCAL" name="numismatics@localhost" uuid="b2896f41-3c04-4cf2-b124-2c70c542eb86">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

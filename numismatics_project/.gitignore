@@ -8,6 +8,7 @@
 
 # GoLand-specific files
 .idea/
+.idea
 
 # Dependency directories
 /vendor/
