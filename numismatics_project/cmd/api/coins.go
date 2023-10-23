@@ -98,13 +98,13 @@ func (app *application) updateCoinHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	var input struct {
-		Title        string            `json:"title"`
-		Description  string            `json:"description"`
-		Country      string            `json:"country"`
-		Status       string            `json:"status"`
-		Quantity     int64             `json:"quantity"`
-		Material     string            `json:"material"`
-		AuctionValue data.AuctionValue `json:"auction_value"`
+		Title        *string            `json:"title"`
+		Description  *string            `json:"description"`
+		Country      *string            `json:"country"`
+		Status       *string            `json:"status"`
+		Quantity     *int64             `json:"quantity"`
+		Material     *string            `json:"material"`
+		AuctionValue *data.AuctionValue `json:"auction_value"`
 	}
 
 	err = app.readJSON(w, r, &input)
@@ -112,14 +112,33 @@ func (app *application) updateCoinHandler(w http.ResponseWriter, r *http.Request
 		app.badRequestResponse(w, r, err)
 		return
 	}
+	if input.Title != nil {
+		coin.Title = *input.Title
+	}
 
-	coin.Title = input.Title
-	coin.Description = input.Description
-	coin.Country = input.Country
-	coin.Status = input.Status
-	coin.Quantity = input.Quantity
-	coin.Material = input.Material
-	coin.AuctionValue = input.AuctionValue
+	if input.Description != nil {
+		coin.Description = *input.Description
+	}
+
+	if input.Country != nil {
+		coin.Country = *input.Country
+	}
+
+	if input.Status != nil {
+		coin.Status = *input.Status
+	}
+
+	if input.Quantity != nil {
+		coin.Quantity = *input.Quantity
+	}
+
+	if input.Material != nil {
+		coin.Material = *input.Material
+	}
+
+	if input.AuctionValue != nil {
+		coin.AuctionValue = *input.AuctionValue
+	}
 
 	v := validator.New()
 
@@ -130,7 +149,12 @@ func (app *application) updateCoinHandler(w http.ResponseWriter, r *http.Request
 
 	err = app.models.Coins.Update(coin)
 	if err != nil {
-		app.serverErrorResponse(w, r, err)
+		switch {
+		case errors.Is(err, data.ErrEditConflict):
+			app.editConflictResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
 		return
 	}
 

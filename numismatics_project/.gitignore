@@ -1,0 +1,14 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.so
+*.a
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# GoLand-specific files
+.idea/
+
+# Dependency directories
+/vendor/
+/go.sum
