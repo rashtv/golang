@@ -182,7 +182,7 @@ func (c CoinModel) Delete(id int64) error {
 	return nil
 }
 
-func (c CoinModel) GetAll(title string, country string, quantity int64, filters Filters) ([]*Coin, error) {
+func (c CoinModel) GetAll(title string, country string, filters Filters) ([]*Coin, error) {
 	query := `
 		SELECT *
 		FROM coins
@@ -198,7 +198,7 @@ func (c CoinModel) GetAll(title string, country string, quantity int64, filters 
 
 	defer rows.Close()
 
-	coins := []*Coin{}
+	var coins []*Coin
 
 	for rows.Next() {
 		var coin Coin

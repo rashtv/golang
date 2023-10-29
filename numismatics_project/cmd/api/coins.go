@@ -190,12 +190,8 @@ func (app *application) deleteCoinHandler(w http.ResponseWriter, r *http.Request
 
 func (app *application) listCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		Title       string `json:"title"`
-		Description string `json:"description"`
-		Country     string `json:"country"`
-		Status      string `json:"status"`
-		Quantity    int64  `json:"quantity"`
-		Material    string `json:"material"`
+		Title   string `json:"title"`
+		Country string `json:"country"`
 		data.Filters
 	}
 
@@ -205,7 +201,6 @@ func (app *application) listCoinsHandler(w http.ResponseWriter, r *http.Request)
 
 	input.Title = app.readString(qs, "title", "")
 	input.Country = app.readString(qs, "country", "")
-	input.Quantity = int64(app.readInt(qs, "quantity", 1, v))
 
 	input.Filters.Page = app.readInt(qs, "page", 1, v)
 	input.Filters.PageSize = app.readInt(qs, "page_size", 20, v)
@@ -219,7 +214,7 @@ func (app *application) listCoinsHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	coins, err := app.models.Coins.GetAll(input.Title, input.Country, input.Quantity, input.Filters)
+	coins, err := app.models.Coins.GetAll(input.Title, input.Country, input.Filters)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
