@@ -181,3 +181,50 @@ func (c CoinModel) Delete(id int64) error {
 
 	return nil
 }
+
+func (c CoinModel) GetAll(title string, country string, quantity int64, filters Filters) ([]*Coin, error) {
+	query := `
+		SELECT *
+		FROM coins
+		ORDER BY id`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	rows, err := c.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	coins := []*Coin{}
+
+	for rows.Next() {
+		var coin Coin
+
+		err := rows.Scan(
+			&coin.ID,
+			&coin.CreatedAt,
+			&coin.Title,
+			&coin.Description,
+			&coin.Country,
+			&coin.Status,
+			&coin.Quantity,
+			&coin.Material,
+			&coin.AuctionValue,
+			&coin.Version,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+		coins = append(coins, &coin)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return coins, nil
+}

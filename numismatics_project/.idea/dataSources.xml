@@ -4,9 +4,11 @@
     <data-source source="LOCAL" name="numismatics@localhost" uuid="b2896f41-3c04-4cf2-b124-2c70c542eb86">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
+      <schema-control>AUTOMATIC</schema-control>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/numismatics</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+      <time-zone>Asia/Almaty</time-zone>
     </data-source>
   </component>
 </project>

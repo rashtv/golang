@@ -187,3 +187,46 @@ func (app *application) deleteCoinHandler(w http.ResponseWriter, r *http.Request
 		app.serverErrorResponse(w, r, err)
 	}
 }
+
+func (app *application) listCoinsHandler(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Title       string `json:"title"`
+		Description string `json:"description"`
+		Country     string `json:"country"`
+		Status      string `json:"status"`
+		Quantity    int64  `json:"quantity"`
+		Material    string `json:"material"`
+		data.Filters
+	}
+
+	v := validator.New()
+
+	qs := r.URL.Query()
+
+	input.Title = app.readString(qs, "title", "")
+	input.Country = app.readString(qs, "country", "")
+	input.Quantity = int64(app.readInt(qs, "quantity", 1, v))
+
+	input.Filters.Page = app.readInt(qs, "page", 1, v)
+	input.Filters.PageSize = app.readInt(qs, "page_size", 20, v)
+	input.Filters.Sort = app.readString(qs, "sort", "id")
+	input.Filters.SortSafelist = []string{
+		"id", "title", "country", "quantity",
+		"-id", "-title", "-country", "-quantity"}
+
+	if data.ValidateFilters(v, input.Filters); !v.Valid() {
+		app.failedValidationResponse(w, r, v.Errors)
+		return
+	}
+
+	coins, err := app.models.Coins.GetAll(input.Title, input.Country, input.Quantity, input.Filters)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, envelope{"coins": coins}, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
