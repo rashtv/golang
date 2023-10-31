@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"goProject/internal/validator"
 	"time"
 )
@@ -183,12 +184,12 @@ func (c CoinModel) Delete(id int64) error {
 }
 
 func (c CoinModel) GetAll(title string, country string, filters Filters) ([]*Coin, error) {
-	query := `
+	query := fmt.Sprintf(`
 		SELECT *
 		FROM coins
 		WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '')
 		AND (LOWER(country) = LOWER($2) OR $2 = '')
-		ORDER BY id`
+		ORDER BY %s %s, id ASC`, filters.sortColumn(), filters.sortDirection())
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

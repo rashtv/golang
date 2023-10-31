@@ -206,8 +206,8 @@ func (app *application) listCoinsHandler(w http.ResponseWriter, r *http.Request)
 	input.Filters.PageSize = app.readInt(qs, "page_size", 20, v)
 	input.Filters.Sort = app.readString(qs, "sort", "id")
 	input.Filters.SortSafelist = []string{
-		"id", "title", "country",
-		"-id", "-title", "-country"}
+		"id", "title", "country", "quantity", "auction_value",
+		"-id", "-title", "-country", "-quantity", "-auction_value"}
 
 	if data.ValidateFilters(v, input.Filters); !v.Valid() {
 		app.failedValidationResponse(w, r, v.Errors)
