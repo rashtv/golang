@@ -186,12 +186,14 @@ func (c CoinModel) GetAll(title string, country string, filters Filters) ([]*Coi
 	query := `
 		SELECT *
 		FROM coins
+		WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '')
+		AND (LOWER(country) = LOWER($2) OR $2 = '')
 		ORDER BY id`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	rows, err := c.DB.QueryContext(ctx, query)
+	rows, err := c.DB.QueryContext(ctx, query, title, country)
 	if err != nil {
 		return nil, err
 	}

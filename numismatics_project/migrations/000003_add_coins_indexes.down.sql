@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS coins_title_idx;

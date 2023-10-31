@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS coins_title_idx ON coins USING GIN (to_tsvector('simple', title));
