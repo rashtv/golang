@@ -183,30 +183,45 @@ func (c CoinModel) Delete(id int64) error {
 	return nil
 }
 
-func (c CoinModel) GetAll(title string, country string, filters Filters) ([]*Coin, error) {
+func (c CoinModel) GetAll(title string, country string, filters Filters) ([]*Coin, Metadata, error) {
 	query := fmt.Sprintf(`
-		SELECT *
+		SELECT count(*) OVER(),
+			id,
+			created_at,
+			title,
+			description,
+			country,
+			status,
+			quantity,
+			material,
+			auction_value,
+			version
 		FROM coins
 		WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '')
 		AND (LOWER(country) = LOWER($2) OR $2 = '')
-		ORDER BY %s %s, id ASC`, filters.sortColumn(), filters.sortDirection())
+		ORDER BY %s %s, id ASC
+		LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	rows, err := c.DB.QueryContext(ctx, query, title, country)
+	args := []interface{}{title, country, filters.limit(), filters.offset()}
+
+	rows, err := c.DB.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, err
+		return nil, Metadata{}, err
 	}
 
 	defer rows.Close()
 
+	totalRecords := 0
 	var coins []*Coin
 
 	for rows.Next() {
 		var coin Coin
 
 		err := rows.Scan(
+			&totalRecords,
 			&coin.ID,
 			&coin.CreatedAt,
 			&coin.Title,
@@ -220,14 +235,16 @@ func (c CoinModel) GetAll(title string, country string, filters Filters) ([]*Coi
 		)
 
 		if err != nil {
-			return nil, err
+			return nil, Metadata{}, err
 		}
 		coins = append(coins, &coin)
 	}
 
 	if err = rows.Err(); err != nil {
-		return nil, err
+		return nil, Metadata{}, err
 	}
 
-	return coins, nil
+	metaData := calculateMetadata(totalRecords, filters.Page, filters.PageSize)
+
+	return coins, metaData, nil
 }

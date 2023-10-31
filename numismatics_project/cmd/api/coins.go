@@ -214,13 +214,13 @@ func (app *application) listCoinsHandler(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	coins, err := app.models.Coins.GetAll(input.Title, input.Country, input.Filters)
+	coins, metadata, err := app.models.Coins.GetAll(input.Title, input.Country, input.Filters)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"coins": coins}, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"coins": coins, "metadata": metadata}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
