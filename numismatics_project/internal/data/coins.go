@@ -121,7 +121,7 @@ func (c CoinModel) Update(coin *Coin) error {
 		    material = $6,
 		    auction_value = $7,
 		    version = version + 1
-		WHERE id = $8 AND version = $6
+		WHERE id = $8 AND version = $9
 		RETURNING version`
 
 	args := []interface{}{
