@@ -14,4 +14,17 @@
 * **<span style="font-size: 24px;">Sending & Parsing JSON Requests | Customized JSON</span>**
 * **<span style="font-size: 24px;">Routing</span>**
 * **<span style="font-size: 24px;">Working with PostgreSQL | SQL Migrations (UP / DOWN)</span>**
-* **<span style="font-size: 24px;">All basic CRUD operations</span>**
+* **<span style="font-size: 24px;">All basic CRUD operations </span>**
+* **<span style="font-size: 24px;">All advanced CRUD operations</span>**
+* **<span style="font-size: 24px;">Filtering | Sorting | Pagination</span>**
+* **<span style="font-size: 24px;">Loggin & Error Handling</span>**
+* **<span style="font-size: 24px;">Rate Limiting</span>**
+* **<span style="font-size: 24px;">Graceful Shutdown</span>**
+* **<span style="font-size: 24px;">Basic User structure</span>**
+* **<span style="font-size: 24px;">Registration</span>**
+* **<span style="font-size: 24px;">Sending Emails</span>**
+  ### TODO
+* **<span style="font-size: 24px;">Authentication</span>**
+* **<span style="font-size: 24px;">Permission-based Authorization</span>**
+* **<span style="font-size: 24px;">Cross Origin Requests</span>**
+* **<span style="font-size: 24px;">Metrics</span>**
