@@ -13,11 +13,11 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healthcheckHandler)
 
-	router.HandlerFunc(http.MethodGet, "/v1/coins", app.listCoinsHandler)
-	router.HandlerFunc(http.MethodPost, "/v1/coins", app.createCoinHandler)
-	router.HandlerFunc(http.MethodGet, "/v1/coins/:id", app.showCoinHandler)
-	router.HandlerFunc(http.MethodPatch, "/v1/coins/:id", app.updateCoinHandler)
-	router.HandlerFunc(http.MethodDelete, "/v1/coins/:id", app.deleteCoinHandler)
+	router.HandlerFunc(http.MethodGet, "/v1/coins", app.requirePermission("coins:read", app.listCoinsHandler))
+	router.HandlerFunc(http.MethodPost, "/v1/coins", app.requirePermission("coins:write", app.createCoinHandler))
+	router.HandlerFunc(http.MethodGet, "/v1/coins/:id", app.requirePermission("coins:read", app.showCoinHandler))
+	router.HandlerFunc(http.MethodPatch, "/v1/coins/:id", app.requirePermission("coins:write", app.updateCoinHandler))
+	router.HandlerFunc(http.MethodDelete, "/v1/coins/:id", app.requirePermission("coins:write", app.deleteCoinHandler))
 
 	router.HandlerFunc(http.MethodPost, "/v1/users", app.registerUserHandler)
 	router.HandlerFunc(http.MethodPut, "/v1/users/activated", app.activateUserHandler)
