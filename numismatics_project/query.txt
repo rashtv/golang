@@ -1,0 +1,77 @@
+# Useful -curl queries for this project #
+
+##
+## APP HEALTHCHECK
+
+curl localhost:4000/v1/healthcheck
+
+##
+## Coins Model CRUD
+
+###
+### CREATE Request for Coins
+BODY='{"title":"Coin", "description": "Coin's Description", "country": "Coin's Country", "status": "Coin's Status", "quantity": 1, "material": "Coin's Material", "auction_value": "999999 USD"}'
+curl -i -d "$BODY" localhost:4000/v1/coins
+
+###
+### READ (FETCH) Request for Coins
+curl -i localhost:4000/v1/movies/2
+
+###
+### UPDATE(PUT -> PATCH) Request for Coins
+curl -X PATCH -d '{"description": "Coin's New Description", "quantity": 2}' localhost:4000/v1/coins/1
+
+###
+### DELETE Request for Coins
+curl -X DELETE localhost:4000/v1/coins/1
+
+###
+### LIST ALL / FILTERED VIA PAGINATION Request for Coins
+curl "localhost:4000/v1/coins
+curl "localhost:4000/v1/coins?title=coin&country=kazakhstan&page=2&page_size=3&sort=-quantity
+
+________________________________________________________________________________________________________________________
+
+####
+## Users Model CRUD + Activation + Authentication
+
+###
+### CREATE Request for Users
+
+BODY='{"name": "Alice Smith", "email": "alice@example.com", "password": "pa55word"}'
+BODY='{"name": "Bob Jones", "email": "bob@example.com", "password": "pa55word"}'
+BODY='{"name": "Dave Smith", "email": "dave@example.com", "password": "pa55word"}'
+BODY='{"name": "Edith Smith", "email": "edith@example.com", "password": "pa55word"}'
+BODY='{"name": "Faith Smith", "email": "faith@example.com", "password": "pa55word"}'
+
+curl -i -d "$BODY" localhost:4000/v1/users
+
+###
+### ACTIVATION for Users
+
+curl -X PUT -d '{"token": "**PUT YOUR TOKEN HERE**"}' localhost:4000/v1/users/activated
+
+###
+### AUTHENTICATION for Users
+
+BODY='{"email": "alice@example.com", "password": "pa55word"}'
+curl -i -d "$BODY" localhost:4000/v1/tokens/authentication
+
+curl -d '{"email": "alice@example.com", "password": "pa55word"}' localhost:4000/v1/tokens/authentication
+curl -H "Authorization: Bearer **PUT YOUR TOKEN HERE**" localhost:4000/v1/healthcheck
+
+###
+### AUTHORIZATION
+
+BODY='{"email": "faith@example.com", "password": "pa55word"}'
+curl -d "$BODY" localhost:4000/v1/tokens/authentication
+curl -H "Authorization: Bearer **PUT YOUR TOKEN HERE**" localhost:4000/v1/coins/1
+
+###
+### GRANTING PERMISSIONS
+
+BODY='{"name": "Grace Smith", "email": "grace@example.com", "password": "pa55word"}'
+curl -d "$BODY" localhost:4000/v1/users
+
+###
+### CORS UNUSABLE

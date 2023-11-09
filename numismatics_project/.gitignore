@@ -13,6 +13,3 @@
 # Dependency directories
 /vendor/
 /go.sum
-
-# My ignores
-query.txt
