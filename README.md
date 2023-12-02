@@ -1,7 +1,7 @@
 # Repository: Golang Application Development
 Here can be found:
-- a [simple golang project](https://github.com/rashtv/golang/edit/main/README.md#management), which will help to learn about syntax of golang and its OOP
-- a [skillfully made golang project](https://github.com/rashtv/golang/edit/main/README.md#numismatics-project), based on the Alex Edwards' book **"Let's Go Further"**
+- a [simple golang project](https://github.com/rashtv/golang/tree/main#management), which will help to learn about syntax of golang and its OOP
+- a [skillfully made golang project](https://github.com/rashtv/golang/tree/main#numismatics-project), based on the Alex Edwards' book **"Let's Go Further"**
 
 Information about these things can be found lower in this README.md file.
 Feel free to look at everything you want :)
