@@ -7,8 +7,8 @@
 *.out
 
 # GoLand-specific files
-.idea/
-.idea
+*/.idea/
+*/.idea
 
 # Dependency directories
 /vendor/
@@ -18,8 +18,8 @@ go.sum
 /bin
 
 # env
-.env
+*/.env
 
 # Draft txt files
-query.txt
-text.txt
+*/query.txt
+*/text.txt
