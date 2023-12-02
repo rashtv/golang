@@ -12,4 +12,14 @@
 
 # Dependency directories
 /vendor/
-/go.sum
+go.sum
+
+# Binary output
+/bin
+
+# env
+.env
+
+# Draft txt files
+query.txt
+text.txt
