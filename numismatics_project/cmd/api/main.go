@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"flag"
+	_ "github.com/lib/pq"
 	"goProject/internal/data"
 	"goProject/internal/jsonlog"
 	"goProject/internal/mailer"
@@ -11,8 +12,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	_ "github.com/lib/pq"
 )
 
 const version = "1.0.0"
