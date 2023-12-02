@@ -23,8 +23,6 @@
 * **<span style="font-size: 24px;">Basic User structure</span>**
 * **<span style="font-size: 24px;">Registration</span>**
 * **<span style="font-size: 24px;">Sending Emails</span>**
-  ### TODO
 * **<span style="font-size: 24px;">Authentication</span>**
 * **<span style="font-size: 24px;">Permission-based Authorization</span>**
 * **<span style="font-size: 24px;">Cross Origin Requests</span>**
-* **<span style="font-size: 24px;">Metrics</span>**
